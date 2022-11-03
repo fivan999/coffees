@@ -1,8 +1,4 @@
-from random import randint
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QWidget, QApplication, QTableWidgetItem, QHeaderView
-from PyQt5 import uic
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
@@ -12,10 +8,99 @@ connection = sqlite3.connect("coffee.db")
 cursor = connection.cursor()
 
 
-class CreateCoffee(QWidget):
+class Ui_CreateCoffee(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(215, 219)
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(10, 10, 31, 21))
+        self.label.setObjectName("label")
+        self.sort_box = QtWidgets.QComboBox(Form)
+        self.sort_box.setGeometry(QtCore.QRect(70, 10, 131, 21))
+        self.sort_box.setObjectName("sort_box")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(10, 40, 61, 21))
+        self.label_2.setObjectName("label_2")
+        self.fry_box = QtWidgets.QComboBox(Form)
+        self.fry_box.setGeometry(QtCore.QRect(70, 40, 131, 21))
+        self.fry_box.setObjectName("fry_box")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setGeometry(QtCore.QRect(10, 70, 61, 21))
+        self.label_3.setObjectName("label_3")
+        self.type_box = QtWidgets.QComboBox(Form)
+        self.type_box.setGeometry(QtCore.QRect(70, 70, 131, 21))
+        self.type_box.setObjectName("type_box")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(10, 100, 61, 21))
+        self.label_4.setObjectName("label_4")
+        self.taste_box = QtWidgets.QComboBox(Form)
+        self.taste_box.setGeometry(QtCore.QRect(70, 100, 131, 21))
+        self.taste_box.setObjectName("taste_box")
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setGeometry(QtCore.QRect(10, 130, 61, 21))
+        self.label_5.setObjectName("label_5")
+        self.price_edit = QtWidgets.QDoubleSpinBox(Form)
+        self.price_edit.setGeometry(QtCore.QRect(70, 130, 131, 22))
+        self.price_edit.setMaximum(9999999999.0)
+        self.price_edit.setObjectName("price_edit")
+        self.label_6 = QtWidgets.QLabel(Form)
+        self.label_6.setGeometry(QtCore.QRect(10, 160, 31, 21))
+        self.label_6.setObjectName("label_6")
+        self.volume_edit = QtWidgets.QSpinBox(Form)
+        self.volume_edit.setGeometry(QtCore.QRect(70, 160, 131, 22))
+        self.volume_edit.setMinimum(0)
+        self.volume_edit.setMaximum(999999999)
+        self.volume_edit.setProperty("value", 0)
+        self.volume_edit.setObjectName("volume_edit")
+        self.save_btn = QtWidgets.QPushButton(Form)
+        self.save_btn.setGeometry(QtCore.QRect(130, 190, 75, 21))
+        self.save_btn.setObjectName("save_btn")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.label.setText(_translate("Form", "Сорт:"))
+        self.label_2.setText(_translate("Form", "Обжарка:"))
+        self.label_3.setText(_translate("Form", "Тип:"))
+        self.label_4.setText(_translate("Form", "Вкус"))
+        self.label_5.setText(_translate("Form", "Цена:"))
+        self.label_6.setText(_translate("Form", "Обьем"))
+        self.save_btn.setText(_translate("Form", "Сохранить"))
+
+
+class Ui_AllCoffeesView(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(680, 331)
+        self.coffee_table_data = QtWidgets.QTableWidget(Form)
+        self.coffee_table_data.setGeometry(QtCore.QRect(10, 40, 661, 281))
+        self.coffee_table_data.setObjectName("coffee_table_data")
+        self.coffee_table_data.setColumnCount(0)
+        self.coffee_table_data.setRowCount(0)
+        self.add_coffee_btn = QtWidgets.QPushButton(Form)
+        self.add_coffee_btn.setGeometry(QtCore.QRect(10, 10, 75, 23))
+        self.add_coffee_btn.setObjectName("add_coffee_btn")
+        self.edit_coffee_btn = QtWidgets.QPushButton(Form)
+        self.edit_coffee_btn.setGeometry(QtCore.QRect(90, 10, 75, 23))
+        self.edit_coffee_btn.setObjectName("edit_coffee_btn")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Кофе"))
+        self.add_coffee_btn.setText(_translate("Form", "Добавить"))
+        self.edit_coffee_btn.setText(_translate("Form", "Изменить"))
+
+
+class CreateCoffee(QWidget, Ui_CreateCoffee):
     def __init__(self):
         super().__init__()
-        uic.loadUi("addEditCoffeeForm.ui", self)
+        self.setupUi(self)
         self.replace_id = None
         self.initUI()
 
@@ -49,11 +134,10 @@ class CreateCoffee(QWidget):
             self.close()
 
 
-class AllCoffeesView(QWidget):
+class AllCoffeesView(QWidget, Ui_AllCoffeesView):
     def __init__(self):
         super().__init__()
-        uic.loadUi("main.ui", self)
-        self.setWindowTitle("Кофе")
+        self.setupUi(self)
         self.coffee_creation_form = CreateCoffee()
         self.setFixedSize(680, 331)
         self.add_coffee_btn.clicked.connect(self.add_coffee)
@@ -71,7 +155,6 @@ class AllCoffeesView(QWidget):
                                       f"INNER JOIN types ON types.id = coffees.type "
                                       f"INNER JOIN tastes ON tastes.id = coffees.taste "
                                       ).fetchall()
-        print(query_result)
         self.coffee_table_data.setRowCount(len(query_result))
         self.coffee_table_data.setColumnCount(len(query_result[0]))
         titles = ["ID", "Сорт", "Обжарка", "Тип", "Вкус", "Цена(рубли)", "Обьем(см3)"]
